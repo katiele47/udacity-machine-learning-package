@@ -89,7 +89,7 @@ class Binomial(Distribution):
         # TODO: calculate the standard deviation of the Binomial distribution. Store
         #       the result in the self standard deviation attribute. Return the value
         #       of the standard deviation.
-        self.stdev = sqrt(self.n * self.p * (1 - self.p))
+        self.stdev = math.sqrt(self.n * self.p * (1 - self.p))
         return self.stdev
         
         
@@ -125,8 +125,7 @@ class Binomial(Distribution):
         #           defined previously.
         self.n = len(self.data)
         numPos = self.data.count(1)
-        numNeg = self.n - numPos
-        self.p = numPos/numNeg
+        self.p = numPos/self.n
         self.mean = self.calculate_mean()
         self.stdev = self.calculate_stdev()
         return self.n, self.p
@@ -232,11 +231,14 @@ class Binomial(Distribution):
             Binomial: Binomial distribution
             
         """
-        
+       
         try:
             assert self.p == other.p, 'p values are not equal'
             result = Binomial()
-            result.n = 
+            result.n = self.n + other.n
+            result.mean = self.mean + other.mean
+            result.stdev = math.sqrt(self.stdev ** 2 + other.stdev ** 2)
+            return result
         except AssertionError as error:
             raise
         
@@ -275,4 +277,4 @@ class Binomial(Distribution):
         #       with the values replaced by whatever the actual distributions values are
         #       The method should return a string in the expected format
     
-        pass
+        return "mean {}, standard deviation {}, p {}, n {}".format(self.mean, self.stdev, self.p, self.n)
